@@ -5,3 +5,54 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  image String?
+
+  reviews Review[]
+  createdAt DateTime @default(now())
+}
+
+
+model MatchaProduct {
+  id        Int   @id @default(autoincrement())
+  brandId   String
+  name      String
+  grade     MatchaGrade?
+
+  //brand     MatchaBrand @relation(fields: [brandId], references: [id])
+  reviews   Review[]
+
+  @@unique([brandId, name])
+}
+
+
+model Review {
+  id    Int   @id @default(autoincrement())
+  userId Int
+  productId Int
+
+  rating Int
+  notes String
+  date DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  product MatchaProduct @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+}
+
+enum BrandType {
+  CEREMONIAL
+  RETAIL
+  CAFE
+}
+
+enum MatchaGrade {
+  CEREMONIAL
+  LATTE
+  CULINARY
+}
