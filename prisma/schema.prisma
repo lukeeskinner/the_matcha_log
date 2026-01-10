@@ -16,14 +16,22 @@ model User {
   createdAt DateTime @default(now())
 }
 
+model MatchaBrand {
+  id Int @id @default(autoincrement())
+  name String @unique
+  brandType BrandType
+
+  products MatchaProduct[]
+}
+
 
 model MatchaProduct {
   id        Int   @id @default(autoincrement())
-  brandId   String
+  brandId   Int
   name      String
   grade     MatchaGrade?
 
-  //brand     MatchaBrand @relation(fields: [brandId], references: [id])
+  brand     MatchaBrand @relation(fields:[brandId], references: [id])
   reviews   Review[]
 
   @@unique([brandId, name])
@@ -36,8 +44,8 @@ model Review {
   productId Int
 
   rating Int
-  notes String
-  date DateTime @default(now())
+  notes String?
+  consumedAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
   product MatchaProduct @relation(fields: [productId], references: [id])
