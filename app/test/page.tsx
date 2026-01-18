@@ -1,11 +1,12 @@
-import { getAllBrands } from "../lib/queries";
+import { getMatchaBrands } from "@/app/lib/queries/matcha";
 
 export default async function TestPage() {
-  const brands = await getAllBrands();
-
-  console.log(brands);
+  const brands = await getMatchaBrands();
 
   return (
-    <pre>{JSON.stringify(brands, null, 2)}</pre>
+    <div style={{ padding: 20 }}>
+      <h1>Supabase Test</h1>
+      <pre>{JSON.stringify(brands, null, 2)}</pre>
+    </div>
   );
 }
